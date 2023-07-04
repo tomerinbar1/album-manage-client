@@ -1,0 +1,129 @@
+.albums-grid.overlay-fade-in {
+  animation: overlay-fade-in 0.3s ease-out forwards;
+}
+
+.albums-grid.overlay-fade-out {
+  animation: overlay-fade-out 0.3s ease-out forwards;
+}
+
+.EditModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: fit-content;
+  background-color: white;
+  overflow-y: hidden;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.15);
+  animation: modal-slide-in 0.3s ease-out forwards;
+  border: none;
+  border-radius: 1em;
+  padding-inline: 1em;
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 3em;
+    height: 3em;
+    background-color: #f1f1f1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease-out;
+    &:hover {
+      background-color: #e1e1e1;
+    }
+  }
+  img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  .edit-form, .add-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    input {
+      width: 85%;
+      height: 2em;
+      border: none;
+      outline: none;
+      font-size: 1em;
+      text-align: center;
+      margin-block: 10px;
+    }
+    button {
+      width: 40%;
+      border: none;
+      padding: 5px;
+      font-size: 1rem;
+      font-weight: 600;
+      background-color: rgb(193, 193, 193);
+      border-radius: 10px;
+      margin-block: 13px;
+      cursor: pointer;
+      &:hover {
+        transform: scale(1.01);
+        background-color: rgb(174, 174, 174);
+      }
+    }
+  }
+
+  @keyframes modal-slide-in {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -40%);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  @keyframes modal-slide-out {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, 100%);
+    }
+  }
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  animation: overlay-fade-in 0.3s ease-out forwards;
+  &.overlay-fade-out {
+    animation: overlay-fade-out 0.3s ease-out forwards;
+  }
+
+  @keyframes overlay-fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes overlay-fade-out {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+}

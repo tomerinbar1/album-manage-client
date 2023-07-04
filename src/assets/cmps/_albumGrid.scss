@@ -1,0 +1,22 @@
+.albums-grid {
+  .add-btn {
+    position: fixed;
+    width: 100px;
+    height: 40px;
+    margin: 20px 0 0 10px;
+    border: none;
+    padding: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: rgb(30, 41, 255);
+    color: rgb(228, 228, 228);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    will-change: transform;
+    &:hover {
+      transform: scale(1.1);
+      transition: all 0.3s ease-in-out;
+    }
+  }
+}
