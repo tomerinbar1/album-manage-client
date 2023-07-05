@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/album-manage-client/static/css/main.d270fb2b.css",
+    "main.js": "/album-manage-client/static/js/main.a73e9681.js",
+    "static/js/787.88c841f7.chunk.js": "/album-manage-client/static/js/787.88c841f7.chunk.js",
+    "static/media/image-not-found.png": "/album-manage-client/static/media/image-not-found.d559459d271e7a3775ec.png",
+    "index.html": "/album-manage-client/index.html",
+    "main.d270fb2b.css.map": "/album-manage-client/static/css/main.d270fb2b.css.map",
+    "main.a73e9681.js.map": "/album-manage-client/static/js/main.a73e9681.js.map",
+    "787.88c841f7.chunk.js.map": "/album-manage-client/static/js/787.88c841f7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d270fb2b.css",
+    "static/js/main.a73e9681.js"
+  ]
+}
