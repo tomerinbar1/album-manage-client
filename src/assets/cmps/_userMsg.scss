@@ -1,0 +1,28 @@
+.user-msg {
+  color: white;
+  padding: 10px;
+  font-size: 1.4em;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  background-color: grey;
+  border-radius: 10px;
+  animation-name: slideUp;
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+}
+.success {
+  background-color: rgb(88, 221, 88);
+}
+.danger {
+  background-color: rgb(221, 88, 88);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

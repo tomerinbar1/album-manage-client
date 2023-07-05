@@ -9,6 +9,8 @@ import {
 import { AlbumsList } from '../components/AlbumsList'
 import { AlbumModal } from '../components/AlbumModal'
 import { EditAlbumModal } from '../components/EditAlbumModal'
+import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
+import { UserMsg } from '../components/UserMsg'
 
 export const AppIndex = () => {
   const albums = useSelector(state => state.appModule.albums)
@@ -40,7 +42,12 @@ export const AppIndex = () => {
   }
 
   const onRemoveAlbum = albumId => {
-    removeAlbum(albumId)
+    try {
+      removeAlbum(albumId)
+      showSuccessMsg('Album removed successfully')
+    } catch (error) {
+      showErrorMsg('Album remove failed')
+    }
   }
 
   const onEditAlbum = async (event, albumId) => {
@@ -55,7 +62,12 @@ export const AppIndex = () => {
 
   const onSaveAlbum = async formData => {
     const { id, title, thumbnailUrl } = Object.fromEntries(formData.entries())
-    await editAlbum( id, title, thumbnailUrl )
+    try {
+      await editAlbum(id, title, thumbnailUrl)
+      showSuccessMsg('Album saved successfully')
+    } catch (error) {
+      showErrorMsg('Album save failed')
+    }
   }
 
   if (!albums?.length) {
@@ -83,6 +95,7 @@ export const AppIndex = () => {
           onEditAlbum={onEditAlbum}
           onSaveAlbum={onSaveAlbum}
         />
+        <UserMsg /> 
       </div>
     </section>
   )
