@@ -2,7 +2,12 @@ import Modal from 'react-modal'
 import { useEffect, useState } from 'react'
 import imgNotFound from '../assets/img/image-not-found.png'
 
-export const EditAlbumModal = ({ album, editModalIsOpen, onCloseModal, onSaveAlbum }) => {
+export const EditAlbumModal = ({
+  album,
+  editModalIsOpen,
+  onCloseModal,
+  onSaveAlbum,
+}) => {
   const [title, setTitle] = useState(null)
   const [thumbnailUrl, setThumbnailUrl] = useState(null)
 
@@ -50,28 +55,21 @@ export const EditAlbumModal = ({ album, editModalIsOpen, onCloseModal, onSaveAlb
       className="EditModal"
       overlayClassName="Overlay"
     >
-      <button className="close-btn" onClick={() => onCloseModal()}>
-        X
-      </button>
       <form className="edit-form">
-        <input
+        <textarea className='title-input'
           type="text"
           name="title"
           value={title}
           onChange={handleTitleChange}
+          rows={2}
         />
         <img src={thumbnailUrl} alt="img" />
+        <input className='upload-input' type="file" name="file" onChange={handleThumbnailUrlChange} />
         <div className="action-btns">
           <button onClick={e => handleSubmit(e)} type="submit">
             Save
           </button>
-          <div className="upload">
-            <input
-              type="file"
-              name="file"
-              onChange={handleThumbnailUrlChange}
-            />
-          </div>
+          <button onClick={() => onCloseModal()}>Cancel</button>
         </div>
       </form>
     </Modal>
