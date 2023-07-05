@@ -4,7 +4,7 @@ import {
   loadAlbums,
   removeAlbum,
   getById,
-  addAlbum,
+  editAlbum,
 } from '../store/app.actions'
 import { AlbumsList } from '../components/AlbumsList'
 import { AlbumModal } from '../components/AlbumModal'
@@ -40,41 +40,30 @@ export const AppIndex = () => {
   }
 
   const onRemoveAlbum = albumId => {
-    console.log('Removing album:', albumId);
     removeAlbum(albumId)
   }
 
   const onEditAlbum = async (event, albumId) => {
     try {
-      if (albumId) {
-        const album = await getById(albumId)
-        setAlbum(album)
-        onOpenModal(event, 'edit')
-      } else {
-        onOpenModal(event, 'add')
-      }
+      const album = await getById(albumId)
+      setAlbum(album)
+      onOpenModal(event, 'edit')
     } catch (error) {
       console.log(error)
     }
   }
 
-  const onSaveAlbum = async (title, img) => {
-    try {
-      await addAlbum(title, img)
-    } catch (error) {
-      console.log('Error saving album:', error)
-    }
+  const onSaveAlbum = async formData => {
+    const { id, title, thumbnailUrl } = Object.fromEntries(formData.entries())
+    await editAlbum( id, title, thumbnailUrl )
   }
 
   if (!albums?.length) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
 
   return (
     <section className="albums-grid">
-      <button className="add-btn" onClick={e => onEditAlbum(e)}>
-        Add album
-      </button>
       <AlbumsList
         albums={albums}
         onRemoveAlbum={onRemoveAlbum}
@@ -91,8 +80,8 @@ export const AppIndex = () => {
           editModalIsOpen={editModalIsOpen}
           onCloseModal={onCloseModal}
           album={album}
-          onSaveAlbum={onSaveAlbum}
           onEditAlbum={onEditAlbum}
+          onSaveAlbum={onSaveAlbum}
         />
       </div>
     </section>

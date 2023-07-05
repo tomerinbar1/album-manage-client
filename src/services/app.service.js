@@ -27,12 +27,13 @@ export async function deleteAlbum(id) {
     .then(data => data)
 }
 
-export async function updateAlbum(id, title) {
+export async function updateAlbum(id, title, thumbnailUrl) {
   return await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`, {
     method: 'PUT',
     body: JSON.stringify({
       id,
       title,
+      thumbnailUrl,
     }),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
@@ -42,17 +43,17 @@ export async function updateAlbum(id, title) {
     .then(data => data)
 }
 
-export async function createAlbum(title, img) {
-  return fetch('https://jsonplaceholder.typicode.com/photos', {
-    method: 'POST',
-    body: JSON.stringify({
-      title,
-      thumbnailUrl: img,
-    }),
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
-  })
-    .then(response => response.json())
-    .then(data => data)
-}
+// export async function createAlbum(title, img) {
+//   return fetch('https://jsonplaceholder.typicode.com/photos', {
+//     method: 'POST',
+//     body: JSON.stringify({
+//       title,
+//       thumbnailUrl: img,
+//     }),
+//     headers: {
+//       'Content-type': 'application/json; charset=UTF-8',
+//     },
+//   })
+//     .then(response => response.json())
+//     .then(data => data)
+// }

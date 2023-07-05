@@ -22,10 +22,6 @@ export function appReducer(state = initialState, action) {
       )
       return { ...state, albums: updatedAlbums }
 
-    case ADD_ALBUM:
-      albums = [...state.albums, action.album]
-      return { ...state, albums }
-
     case UPDATE_ALBUM:
       albums = state.albums.map(album =>
         album.id === action.album.id ? action.album : album

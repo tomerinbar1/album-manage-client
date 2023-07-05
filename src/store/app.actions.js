@@ -3,21 +3,14 @@ import {
   deleteAlbum,
   updateAlbum,
   getAlbumById,
-  createAlbum,
 } from '../services/app.service.js'
 import { storageService } from '../services/storage.service.js'
 import { store } from './store.js'
-import {
-  SET_ALBUMS,
-  ADD_ALBUM,
-  UPDATE_ALBUM,
-  REMOVE_ALBUM,
-} from './app.reducer.js'
+import { SET_ALBUMS, UPDATE_ALBUM, REMOVE_ALBUM } from './app.reducer.js'
 
 export async function loadAlbums() {
   try {
     let albums = storageService.load('albums') || []
-
     if (!albums || !albums.length) {
       albums = await getAlbums()
       storageService.store('albums', albums)
@@ -43,24 +36,20 @@ export async function removeAlbum(albumId) {
   }
 }
 
-export async function editAlbum(id, title) {
+export async function editAlbum(id, title, thumbnailUrl) {
   try {
-    const updatedAlbum = await updateAlbum(id, title)
-
+    const updatedAlbum = await updateAlbum(id, title, thumbnailUrl)
     const storedAlbums = storageService.load('albums') || []
     const albumIndex = storedAlbums.findIndex(
       album => album.id === updatedAlbum.id
     )
-
     if (albumIndex !== -1) {
       storedAlbums[albumIndex] = updatedAlbum
     } else {
-      storedAlbums.push(updatedAlbum)
+      storedAlbums.unshift(updatedAlbum)
     }
-
     storageService.store('albums', storedAlbums)
     store.dispatch({ type: UPDATE_ALBUM, album: updatedAlbum })
-    console.log('app action -> Album updated')
   } catch (err) {
     console.log('app action -> Cannot update album', err)
     throw err
@@ -79,20 +68,6 @@ export async function getById(id) {
     }
   } catch (err) {
     console.log('app action -> Cannot get album', err)
-    throw err
-  }
-}
-
-export async function addAlbum(title, img) {
-  try {
-    const newAlbum = await createAlbum(title, img)
-    let albums = storageService.load('albums') || []
-    albums.unshift(newAlbum)
-    storageService.store('albums', albums)
-    store.dispatch({ type: ADD_ALBUM, album: newAlbum })
-    return newAlbum
-  } catch (err) {
-    console.log('app action -> Cannot add album', err)
     throw err
   }
 }

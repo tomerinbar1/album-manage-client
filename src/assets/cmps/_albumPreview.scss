@@ -25,6 +25,8 @@
   img {
     width: 100%;
     border-radius: 10px;
+    aspect-ratio: 1;
+    object-fit: cover;
   }
   .action-btns {
     display: flex;

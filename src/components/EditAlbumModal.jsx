@@ -1,20 +1,18 @@
 import Modal from 'react-modal'
 import { useEffect, useState } from 'react'
-import defaultImg from '../assets/img/default.png'
+import imgNotFound from '../assets/img/image-not-found.png'
 
-export const EditAlbumModal = ({
-  album,
-  editModalIsOpen,
-  onSaveAlbum,
-  onCloseModal,
-}) => {
+export const EditAlbumModal = ({ album, editModalIsOpen, onCloseModal, onSaveAlbum }) => {
   const [title, setTitle] = useState(null)
+  const [thumbnailUrl, setThumbnailUrl] = useState(null)
 
   useEffect(() => {
-    if (album && album.title) {
+    if (album && album.title && album.thumbnailUrl) {
       setTitle(album.title)
+      setThumbnailUrl(album.thumbnailUrl)
     } else {
       setTitle('')
+      setThumbnailUrl(imgNotFound)
     }
   }, [album])
 
@@ -22,15 +20,25 @@ export const EditAlbumModal = ({
     setTitle(event.target.value)
   }
 
+  const handleThumbnailUrlChange = event => {
+    const file = event.target.files[0]
+    const reader = new FileReader()
+    reader.onload = () => {
+      setThumbnailUrl(reader.result)
+    }
+    if (file) {
+      reader.readAsDataURL(file)
+    }
+  }
+
   const handleSubmit = e => {
     e.preventDefault()
-    if (album.id) {
-      onSaveAlbum(title)
-      onCloseModal()
-    } else {
-      onSaveAlbum(title, defaultImg)
-      onCloseModal()
-    }
+    const formData = new FormData()
+    formData.append('id', album.id)
+    formData.append('title', title)
+    formData.append('thumbnailUrl', thumbnailUrl)
+    onSaveAlbum(formData)
+    onCloseModal()
   }
 
   if (!editModalIsOpen) return null
@@ -45,35 +53,27 @@ export const EditAlbumModal = ({
       <button className="close-btn" onClick={() => onCloseModal()}>
         X
       </button>
-      {album.id ? (
-        <form className="edit-form">
-          <input
-            type="text"
-            name="title"
-            id="title"
-            value={title}
-            onChange={handleTitleChange}
-          />
-          <img src={album.thumbnailUrl} alt="img" />
+      <form className="edit-form">
+        <input
+          type="text"
+          name="title"
+          value={title}
+          onChange={handleTitleChange}
+        />
+        <img src={thumbnailUrl} alt="img" />
+        <div className="action-btns">
           <button onClick={e => handleSubmit(e)} type="submit">
             Save
           </button>
-        </form>
-      ) : (
-        <form className="add-form">
-          <input
-            type="text"
-            name="title"
-            id="title"
-            value={title}
-            onChange={handleTitleChange}
-          />
-          <img src={defaultImg} alt="img" />
-          <button onClick={e => handleSubmit(e)} type="submit">
-            Save
-          </button>
-        </form>
-      )}
+          <div className="upload">
+            <input
+              type="file"
+              name="file"
+              onChange={handleThumbnailUrlChange}
+            />
+          </div>
+        </div>
+      </form>
     </Modal>
   )
 }
