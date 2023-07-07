@@ -6,10 +6,12 @@
     width: 100%;
     height: 60px;
     background-color: #68a2ff;
+    // I dont like this, are you sure that you need it?
     z-index: 1;
     h1{
         font-size: 2rem;
         font-weight: 600;
+        // You could use a variable file for colors
         color: #fff;
     }
 }

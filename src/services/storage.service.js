@@ -3,7 +3,7 @@ function store(key, value) {
 }
 
 function load(key, defaultValue = null) {
-  var value = localStorage[key] || defaultValue
+  const value = localStorage[key] || defaultValue
   return JSON.parse(value)
 }
 export const storageService = {

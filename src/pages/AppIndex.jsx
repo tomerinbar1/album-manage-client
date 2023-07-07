@@ -5,6 +5,7 @@ import {
   removeAlbum,
   getById,
   editAlbum,
+  addNewImg,
 } from '../store/app.actions'
 import { AlbumsList } from '../components/AlbumsList'
 import { AlbumModal } from '../components/AlbumModal'
@@ -13,6 +14,7 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { UserMsg } from '../components/UserMsg'
 
 export const AppIndex = () => {
+  //!  The name AppIndex is not good, I will prefer to use AppPage or App, AlbumPage or AlbumApp etc...
   const albums = useSelector(state => state.appModule.albums)
   const [previewModalIsOpen, setPreviewModalIsOpen] = useState(false)
   const [editModalIsOpen, setEditModalIsOpen] = useState(false)
@@ -21,10 +23,14 @@ export const AppIndex = () => {
 
   useEffect(() => {
     loadAlbums()
+    //! For what the eslint-disable-next-line?
     // eslint-disable-next-line
   }, [])
 
   const onOpenModal = (event, modal) => {
+    //! I don't like the way that you need to know via hard coded what model should be open
+    //! Why not to create 2 functions for each modal?, you aren't saved any code here.
+
     event.preventDefault()
     if (modal === 'preview') {
       setImg(event.target.src)
@@ -39,6 +45,9 @@ export const AppIndex = () => {
   const onCloseModal = () => {
     setPreviewModalIsOpen(false)
     setEditModalIsOpen(false)
+    //! I prefer always to use the opposite of the condition.
+    //! Like this:
+    //! setPreviewModalIsOpen(!previewModalIsOpen)
   }
 
   const onRemoveAlbum = albumId => {
@@ -61,19 +70,28 @@ export const AppIndex = () => {
   }
 
   const onSaveAlbum = async formData => {
-    const { id, title, thumbnailUrl } = Object.fromEntries(formData.entries())
+    const { id, title } = Object.fromEntries(formData.entries())
     try {
-      await editAlbum(id, title, thumbnailUrl)
+      await editAlbum(id, title)
       showSuccessMsg('Album saved successfully')
     } catch (error) {
       showErrorMsg('Album save failed')
     }
   }
 
+  const onAddImg = async (e, albumId, thumbnailUrl) => {
+    e.preventDefault()
+    try {
+      await addNewImg(albumId, thumbnailUrl)
+      showSuccessMsg('Image added successfully')
+    } catch (error) {}
+  }
+
   if (!albums?.length) {
     return <div>Loading...</div>
   }
 
+  //! I will build one component that is a modal and I'll render inside of it the children, And I'll not need to create the Modal of react again.
   return (
     <section className="albums-grid">
       <AlbumsList
@@ -94,8 +112,9 @@ export const AppIndex = () => {
           album={album}
           onEditAlbum={onEditAlbum}
           onSaveAlbum={onSaveAlbum}
+          onAddImg={onAddImg}
         />
-        <UserMsg /> 
+        <UserMsg />
       </div>
     </section>
   )

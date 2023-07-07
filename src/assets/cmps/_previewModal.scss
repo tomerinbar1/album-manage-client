@@ -1,3 +1,9 @@
+// You have a lot of things on the file that are not used directly on the previewModal component.
+// Try always to split the code,for example, you need only one parent here, and use a nested selector for the children.
+// Animation can be found on _animation.scss file. The img selector here is not for this component, is for the whole project.
+// You are using also the @media here... not good practice.
+// You are using the VW unit here, not good practice.
+// If you are using the Modal, they are doing everything for you, you don't need to specify the css for them.
 .albums-grid.overlay-fade-in {
   animation: overlay-fade-in 0.3s ease-out forwards;
 }

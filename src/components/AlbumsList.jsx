@@ -8,6 +8,7 @@ export function AlbumsList({
 }) {
   return (
     <ul className="albums-list">
+      {/* Why are you using reverse? */}
       {albums.reverse().map(album => (
         <li className="album-preview" key={album.id}>
           <AlbumPreview

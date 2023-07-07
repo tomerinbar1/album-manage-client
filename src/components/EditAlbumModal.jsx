@@ -7,18 +7,16 @@ export const EditAlbumModal = ({
   editModalIsOpen,
   onCloseModal,
   onSaveAlbum,
+  onAddImg,
 }) => {
-  const [title, setTitle] = useState(null)
-  const [thumbnailUrl, setThumbnailUrl] = useState(null)
+  const [title, setTitle] = useState(album?.title || '')
+  const [thumbnailUrl, setThumbnailUrl] = useState(
+    album?.thumbnailUrl || imgNotFound
+  )
 
   useEffect(() => {
-    if (album && album.title && album.thumbnailUrl) {
-      setTitle(album.title)
-      setThumbnailUrl(album.thumbnailUrl)
-    } else {
-      setTitle('')
-      setThumbnailUrl(imgNotFound)
-    }
+    setTitle(album?.title || '')
+    setThumbnailUrl(album?.thumbnailUrl || '')
   }, [album])
 
   const handleTitleChange = event => {
@@ -41,13 +39,11 @@ export const EditAlbumModal = ({
     const formData = new FormData()
     formData.append('id', album.id)
     formData.append('title', title)
-    formData.append('thumbnailUrl', thumbnailUrl)
     onSaveAlbum(formData)
     onCloseModal()
   }
 
   if (!editModalIsOpen) return null
-
   return (
     <Modal
       isOpen={editModalIsOpen}
@@ -56,7 +52,8 @@ export const EditAlbumModal = ({
       overlayClassName="Overlay"
     >
       <form className="edit-form">
-        <textarea className='title-input'
+        <input
+          className="title-input"
           type="text"
           name="title"
           value={title}
@@ -64,9 +61,24 @@ export const EditAlbumModal = ({
           rows={2}
         />
         <img src={thumbnailUrl} alt="img" />
-        <input className='upload-input' type="file" name="file" onChange={handleThumbnailUrlChange} />
+        <div className="img-upload-actions">
+          <input
+            className="upload-input"
+            type="file"
+            name="file"
+            onChange={handleThumbnailUrlChange}
+          />
+          <button
+            className="upload-btn"
+            onClick={e => onAddImg(e, album.id, thumbnailUrl)}
+            type="submit"
+          >
+            Add new Image
+          </button>
+        </div>
+
         <div className="action-btns">
-          <button onClick={e => handleSubmit(e)} type="submit">
+          <button onClick={handleSubmit} type="submit">
             Save
           </button>
           <button onClick={() => onCloseModal()}>Cancel</button>

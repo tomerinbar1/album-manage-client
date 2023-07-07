@@ -1,16 +1,23 @@
+import { storageService } from '../services/storage.service'
+
 export async function getAlbums(limit = 100) {
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/photos?_limit=${limit}`
-  )
-  const data = await response.json()
+  const albums = storageService.load('albums') || []
+  if (!albums || !albums.length) {
+    const response = await fetch(
+      `https://jsonplaceholder.typicode.com/photos?_limit=${limit}`
+    )
+    const data = await response.json()
 
-  const modifiedData = data.map(({ id, title, thumbnailUrl }) => ({
-    id,
-    title,
-    thumbnailUrl,
-  }))
+    const updatedAlbums = data.map(({ id, title, thumbnailUrl }) => ({
+      id,
+      title,
+      thumbnailUrl: [thumbnailUrl],
+    }))
 
-  return modifiedData
+    storageService.store('albums', updatedAlbums)
+    return updatedAlbums
+  }
+  return albums
 }
 
 export async function getAlbumById(id) {
@@ -43,17 +50,16 @@ export async function updateAlbum(id, title, thumbnailUrl) {
     .then(data => data)
 }
 
-// export async function createAlbum(title, img) {
-//   return fetch('https://jsonplaceholder.typicode.com/photos', {
-//     method: 'POST',
-//     body: JSON.stringify({
-//       title,
-//       thumbnailUrl: img,
-//     }),
-//     headers: {
-//       'Content-type': 'application/json; charset=UTF-8',
-//     },
-//   })
-//     .then(response => response.json())
-//     .then(data => data)
-// }
+export async function addImg(img) {
+  return fetch(`https://jsonplaceholder.typicode.com/photos`, {
+    method: 'POST',
+    body: JSON.stringify({
+      thumbnailUrl: [img],
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  })
+    .then(response => response.json())
+    .then(data => data)
+}
